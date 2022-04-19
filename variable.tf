@@ -121,3 +121,21 @@ variable "enable_ddos_pp" {
   default     = false
   description = "Flag to control the resource creation"
 }
+
+# variable "r_name" {
+#   type        = string
+#   description = "The name of the route table."
+# }
+
+variable "routes" {
+  type        = list(map(string))
+  default     = []
+  description = "List of objects that represent the configuration of each route."
+  /*ROUTES = [{ name = "", address_prefix = "", next_hop_type = "", next_hop_in_ip_address = "" }]*/
+}
+
+variable "disable_bgp_route_propagation" {
+  type        = bool
+  default     = true
+  description = "Boolean flag which controls propagation of routes learned by BGP on that route table."
+}

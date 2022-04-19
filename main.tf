@@ -48,3 +48,21 @@ resource "azurerm_subnet" "subnet" {
   enforce_private_link_endpoint_network_policies = lookup(var.subnet_enforce_private_link_endpoint_network_policies, var.subnet_names[count.index], false)
   service_endpoints                              = lookup(var.subnet_service_endpoints, var.subnet_names[count.index], [])
 }
+
+resource "azurerm_route_table" "rtables" {
+  name                = var.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  dynamic "route" {
+    for_each = var.routes
+    content {
+      name                   = route.value.name
+      address_prefix         = route.value.address_prefix
+      next_hop_type          = route.value.next_hop_type
+      next_hop_in_ip_address = lookup(route.value, "next_hop_in_ip_address", null)
+    }
+  }
+  disable_bgp_route_propagation = var.disable_bgp_route_propagation
+  tags                          = module.labels.tags
+}
+
