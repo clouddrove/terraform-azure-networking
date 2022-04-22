@@ -1,51 +1,128 @@
-variable "create_resource_group" {
-  description = "Whether to create resource group and use it for all networking resources"
+#Module      : LABEL
+#Description : Terraform label module variables.
+variable "name" {
+  type        = string
+  default     = ""
+  description = "Name  (e.g. `app` or `cluster`)."
+}
+
+variable "environment" {
+  type        = string
+  default     = ""
+  description = "Environment (e.g. `prod`, `dev`, `staging`)."
+}
+
+variable "repository" {
+  type        = string
+  default     = "https://github.com/clouddrove/terraform-azure-labels"
+  description = "Terraform current module repo"
+}
+
+variable "business_unit" {
+  type        = string
+  default     = "Corp"
+  description = "Top-level division of your company that owns the subscription or workload that the resource belongs to. In smaller organizations, this tag might represent a single corporate or shared top-level organizational element."
+}
+
+variable "label_order" {
+  type        = list(any)
+  default     = []
+  description = "Label order, e.g. sequence of application name and environment `name`,`environment`,'attribute' [`webserver`,`qa`,`devops`,`public`,] ."
+}
+
+variable "attributes" {
+  type        = list(string)
+  default     = []
+  description = "Additional attributes (e.g. `1`)."
+}
+
+variable "extra_tags" {
+  type        = map(string)
+  default     = {}
+  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
+}
+
+variable "managedby" {
+  type        = string
+  default     = "hello@clouddrove.com"
+  description = "ManagedBy, eg 'CloudDrove'."
+}
+
+variable "enabled" {
+  type        = bool
+  description = "Set to false to prevent the module from creating any resources."
   default     = true
 }
 
-variable "resource_group_name" {
-  description = "A container that holds related resources for an Azure solution"
-  default     = ""
+variable "delimiter" {
+  type        = string
+  default     = "-"
+  description = "Delimiter to be used between `organization`, `name`, `environment` and `attributes`."
 }
 
 variable "location" {
-  description = "The location/region to keep all your network resources. To get the list of all locations with table format from azure cli, run 'az account list-locations -o table'"
+  type        = string
   default     = ""
+  description = "Location where resource should be created."
 }
 
-variable "vnetwork_name" {
-  description = "Name of your Azure Virtual Network"
-  default     = ""
+variable "create" {
+  type        = string
+  default     = "90m"
+  description = "Used when creating the Resource Group."
 }
 
-variable "vnet_address_space" {
-  description = "The address space to be used for the Azure virtual network."
-  default     = ""
+variable "read" {
+  type        = string
+  default     = "5m"
+  description = "Used when retrieving the Resource Group."
 }
 
-variable "create_ddos_plan" {
-  description = "Create an ddos plan - Default is false"
-  default     = false
+variable "update" {
+  type        = string
+  default     = "90m"
+  description = "Used when updating the Resource Group."
 }
 
-variable "dns_servers" {
-  description = "List of dns servers to use for virtual network"
-  default     = []
+variable "delete" {
+  type        = string
+  default     = "90m"
+  description = "Used when deleting the Resource Group."
 }
 
-variable "ddos_plan_name" {
-  description = "The name of AzureNetwork DDoS Protection Plan"
-  default     = "azureddosplan01"
+
+variable "tags" {
+  type        = map(any)
+  default     = {}
+  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
 }
 
-variable "create_network_watcher" {
-  description = "Controls if Network Watcher resources should be created for the Azure subscription"
-  default     = true
-}
-
+# variable "managedby" {
+#   type        = string
+#   default     = "hello@clouddrove.com"
+#   description = "ManagedBy, eg 'CloudDrove'."
+# }
 variable "subnets" {
   description = "For each subnet, create an object that contain fields"
   default     = {}
+}
+variable "enable" {
+  type        = bool
+  default     = true
+  description = "Flag to control the module creation"
+}
+
+variable "resource_group_name" {
+  type        = string
+  default     = ""
+  description = "The name of an existing resource group to be imported."
+}
+
+
+variable "address_space" {
+  type        = string
+  default     = "10.0.0.0/16"
+  description = "The address space that is used by the virtual network."
 }
 
 variable "gateway_subnet_address_prefix" {
@@ -53,32 +130,50 @@ variable "gateway_subnet_address_prefix" {
   default     = null
 }
 
-variable "firewall_subnet_address_prefix" {
-  description = "The address prefix to use for the Firewall subnet"
-  default     = null
-}
-
-variable "firewall_service_endpoints" {
-  description = "Service endpoints to add to the firewall subnet"
+variable "address_spaces" {
   type        = list(string)
-  default = [
-    "Microsoft.AzureActiveDirectory",
-    "Microsoft.AzureCosmosDB",
-    "Microsoft.EventHub",
-    "Microsoft.KeyVault",
-    "Microsoft.ServiceBus",
-    "Microsoft.Sql",
-    "Microsoft.Storage",
-  ]
+  default     = []
+  description = "The list of the address spaces that is used by the virtual network."
 }
 
-variable "tags" {
-  description = "A map of tags to add to all resources"
-  type        = map(string)
+# If no values specified, this defaults to Azure DNS 
+variable "dns_servers" {
+  type        = list(string)
+  default     = []
+  description = "The DNS servers to be used with vNet."
+}
+
+variable "subnet_prefixes" {
+  type        = list(string)
+  default     = []
+  description = "The address prefix to use for the subnet."
+}
+
+variable "subnet_names" {
+  type        = list(string)
+  default     = []
+  description = "A list of public subnets inside the vNet."
+}
+
+
+variable "subnet_enforce_private_link_endpoint_network_policies" {
+  type        = map(bool)
   default     = {}
+  description = "A map with key (string) `subnet name`, value (bool) `true` or `false` to indicate enable or disable network policies for the private link endpoint on the subnet. Default value is false."
 }
 
-variable "name" {
+variable "subnet_service_endpoints" {
+  type        = map(list(string))
+  default     = {}
+  description = "A map with key (string) `subnet name`, value (list(string)) to indicate enabled service endpoints on the subnet. Default value is []."
+}
+
+variable "enable_ddos_pp" {
+  type        = bool
+  default     = false
+  description = "Flag to control the resource creation"
+}
+variable "r_name" {
   type        = string
   description = "The name of the route table."
 }
@@ -94,4 +189,9 @@ variable "disable_bgp_route_propagation" {
   type        = bool
   default     = true
   description = "Boolean flag which controls propagation of routes learned by BGP on that route table."
+}
+
+variable "networkwater_name" {
+  type    = string
+  default = ""
 }
