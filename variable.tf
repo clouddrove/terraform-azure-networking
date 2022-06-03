@@ -30,24 +30,6 @@ variable "label_order" {
   description = "Label order, e.g. `name`,`application`."
 }
 
-variable "attributes" {
-  type        = list(any)
-  default     = []
-  description = "Additional attributes (e.g. `1`)."
-}
-
-variable "delimiter" {
-  type        = string
-  default     = "-"
-  description = "Delimiter to be used between `organization`, `environment`, `name` and `attributes`."
-}
-
-variable "tags" {
-  type        = map(any)
-  default     = {}
-  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
-}
-
 variable "managedby" {
   type        = string
   default     = "hello@clouddrove.com"
@@ -84,7 +66,7 @@ variable "address_spaces" {
   description = "The list of the address spaces that is used by the virtual network."
 }
 
-# If no values specified, this defaults to Azure DNS 
+# If no values specified, this defaults to Azure DNS
 variable "dns_servers" {
   type        = list(string)
   default     = []
@@ -103,7 +85,6 @@ variable "subnet_names" {
   description = "A list of public subnets inside the vNet."
 }
 
-
 variable "subnet_enforce_private_link_endpoint_network_policies" {
   type        = map(bool)
   default     = {}
@@ -120,4 +101,54 @@ variable "enable_ddos_pp" {
   type        = bool
   default     = false
   description = "Flag to control the resource creation"
+}
+
+
+variable "delegations" {
+  type        = any
+  default     = []
+  description = "Block of services that has to be delegated."
+}
+
+variable "network_watcher" {
+  type        = bool
+  default     = false
+  description = "Controls if Network Watcher resources should be created for the Azure subscription"
+}
+
+#route_table variable
+variable "route_table_enabled" {
+  type        = bool
+  default     = true
+  description = "Flag to control the module creation"
+}
+
+variable "route_table" {
+  type        = list(map(string))
+  default     = []
+  description = "List of objects representing routes. Each object accepts the arguments documented below."
+}
+
+variable "disable_bgp_route_propagation" {
+  type        = bool
+  default     = false
+  description = "Boolean flag which controls propagation of routes learned by BGP on that route table. True means disable."
+}
+
+variable "enabled_nsg" {
+  type        = bool
+  default     = true
+  description = "Flag to enable to associcate subnet with nsg."
+}
+
+variable "address_prefixes" {
+  type        = list(any)
+  default     = []
+  description = "List of address prefixes for the subnet."
+}
+
+variable "network_security_group_id" {
+  type        = string
+  default     = ""
+  description = "The ID of the Network Security Group which should be associated with the Subnet."
 }

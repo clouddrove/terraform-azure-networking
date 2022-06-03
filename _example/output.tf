@@ -1,21 +1,21 @@
 output "vnet_id" {
-  description = "The id of the newly created vNet"
   value       = module.vnet.vnet_id
+  description = "The id of the newly created vNet"
 }
 
 output "vnet_name" {
-  description = "The name of the newly created vNet"
   value       = module.vnet.vnet_name
+  description = "The name of the newly created vNet"
 }
 
 output "vnet_location" {
-  description = "The location of the newly created vNet"
   value       = module.vnet.vnet_location
+  description = "The location of the newly created vNet"
 }
 
 output "vnet_address_space" {
-  description = "The address space of the newly created vNet"
   value       = module.vnet.vnet_address_space
+  description = "The address space of the newly created vNet"
 }
 
 output "vnet_subnets" {
