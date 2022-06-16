@@ -69,6 +69,7 @@ resource "azurerm_route_table" "routetable" {
   name                = format("%s-route-table", module.labels.id)
   location            = var.location
   resource_group_name = var.resource_group_name
+
   dynamic "route" {
     for_each = var.route_table
     content {
