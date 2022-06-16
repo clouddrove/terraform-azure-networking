@@ -46,7 +46,7 @@ module "vnet" {
   ]
   disable_bgp_route_propagation = false
 
-  enabled_nsg               = true
-  network_security_group_id = azurerm_network_security_group.example.id
+  enabled_nsg = true
+  #  network_security_group_id = azurerm_network_security_group.example.id
 
 }
