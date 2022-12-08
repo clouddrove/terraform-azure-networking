@@ -84,7 +84,7 @@ variable "address_spaces" {
   description = "The list of the address spaces that is used by the virtual network."
 }
 
-# If no values specified, this defaults to Azure DNS 
+# If no values specified, this defaults to Azure DNS
 variable "dns_servers" {
   type        = list(string)
   default     = []
@@ -120,4 +120,33 @@ variable "enable_ddos_pp" {
   type        = bool
   default     = false
   description = "Flag to control the resource creation"
+}
+
+variable "subnet_enforce_private_link_service_network_policies" {
+  type        = bool
+  default     = true
+  description = "A map with key (string) `subnet name`, value (bool) `true` or `false` to indicate enable or disable network policies for the private link endpoint on the subnet. Default value is false."
+}
+
+variable "private_delegation" {
+  default = {}
+}
+
+variable "enabled_route_table" {
+  type        = bool
+  default     = false
+  description = ""
+}
+
+variable "routes" {
+  type        = list(map(string))
+  default     = []
+  description = "List of objects that represent the configuration of each route."
+  /*ROUTES = [{ name = "", address_prefix = "", next_hop_type = "", next_hop_in_ip_address = "" }]*/
+}
+
+variable "disable_bgp_route_propagation" {
+  type        = bool
+  default     = true
+  description = "Boolean flag which controls propagation of routes learned by BGP on that route table."
 }

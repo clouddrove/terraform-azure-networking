@@ -47,4 +47,40 @@ resource "azurerm_subnet" "subnet" {
   virtual_network_name                           = join("", azurerm_virtual_network.vnet.*.name)
   enforce_private_link_endpoint_network_policies = lookup(var.subnet_enforce_private_link_endpoint_network_policies, var.subnet_names[count.index], false)
   service_endpoints                              = lookup(var.subnet_service_endpoints, var.subnet_names[count.index], [])
+  enforce_private_link_service_network_policies  = var.subnet_enforce_private_link_service_network_policies
+
+  dynamic "delegation" {
+    for_each = var.private_delegation
+    content {
+      name = lookup(each.value.private_delegation, "name", null)
+      service_delegation {
+        name    = lookup(each.value.private_delegation.service_delegation, "name", null)
+        actions = lookup(each.value.private_delegation.service_delegation, "actions", null)
+      }
+    }
+  }
+}
+
+resource "azurerm_route_table" "rt" {
+  count               = var.enable && var.enabled_route_table ? 1 : 0
+  name                = format("rt-%s", module.labels.id)
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  dynamic "route" {
+    for_each = var.routes
+    content {
+      name                   = route.value.name
+      address_prefix         = route.value.address_prefix
+      next_hop_type          = route.value.next_hop_type
+      next_hop_in_ip_address = lookup(route.value, "next_hop_in_ip_address", null)
+    }
+  }
+  disable_bgp_route_propagation = var.disable_bgp_route_propagation
+  tags                          = module.labels.tags
+}
+
+resource "azurerm_subnet_route_table_association" "main" {
+  count          = var.enable && var.enabled_route_table ? length(var.subnet_prefixes) : 0
+  subnet_id      = element(azurerm_subnet.subnet.*.id, count.index)
+  route_table_id = join("", azurerm_route_table.rt.*.id)
 }
