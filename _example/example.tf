@@ -26,8 +26,8 @@ module "vnet" {
   enable_ddos_pp      = true
 
   #subnet
-  subnet_names        = ["subnet1", "subnet2"]
-  subnet_prefixes     = ["10.0.1.0/24", "10.0.2.0/24"]
+  subnet_names                  = ["subnet1", "subnet2"]
+  subnet_prefixes               = ["10.0.1.0/24", "10.0.2.0/24"]
   disable_bgp_route_propagation = false
 
   # routes
@@ -38,5 +38,5 @@ module "vnet" {
       address_prefix = "0.0.0.0/0"
       next_hop_type  = "Internet"
     }
-    ]
+  ]
 }
