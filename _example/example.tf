@@ -23,7 +23,20 @@ module "vnet" {
   resource_group_name = module.resource_group.resource_group_name
   location            = module.resource_group.resource_group_location
   address_space       = "10.0.0.0/16"
-  subnet_names        = ["subnet1"]
-  subnet_prefixes     = ["10.0.1.0/24"]
   enable_ddos_pp      = true
+
+  #subnet
+  subnet_names                  = ["subnet1", "subnet2"]
+  subnet_prefixes               = ["10.0.1.0/24", "10.0.2.0/24"]
+  disable_bgp_route_propagation = false
+
+  # routes
+  enabled_route_table = true
+  routes = [
+    {
+      name           = "rt-test"
+      address_prefix = "0.0.0.0/0"
+      next_hop_type  = "Internet"
+    }
+  ]
 }
