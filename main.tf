@@ -16,7 +16,7 @@ module "labels" {
 
 resource "azurerm_virtual_network" "vnet" {
   count               = var.enable == true ? 1 : 0
-  name                = "${var.name}-vnet"
+  name                = format("%s-%s-vnet", var.environment, var.name)
   resource_group_name = var.resource_group_name
   location            = var.location
   address_space       = length(var.address_spaces) == 0 ? [var.address_space] : var.address_spaces
@@ -33,7 +33,7 @@ resource "azurerm_virtual_network" "vnet" {
 
 resource "azurerm_network_ddos_protection_plan" "example" {
   count               = var.enable_ddos_pp && var.enable == true ? 1 : 0
-  name                = "${var.name}-ddospp"
+  name                = format("%s-%s-ddospp", var.environment, var.name)
   location            = var.location
   resource_group_name = var.resource_group_name
   tags                = module.labels.tags
@@ -63,7 +63,7 @@ resource "azurerm_subnet" "subnet" {
 
 resource "azurerm_route_table" "rt" {
   count               = var.enable && var.enabled_route_table ? 1 : 0
-  name                = format("rt-%s", module.labels.id)
+  name                = format("%s-%s-route-table", var.environment, var.name)
   location            = var.location
   resource_group_name = var.resource_group_name
   dynamic "route" {
