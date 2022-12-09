@@ -7,7 +7,7 @@ module "resource_group" {
   version = "1.0.0"
 
   name        = "app"
-  environment = "env"
+  environment = "test"
   label_order = ["environment", "name", ]
   location    = "North Europe"
 }
@@ -16,7 +16,7 @@ module "vnet" {
   source = "../"
 
   name                = "app"
-  environment         = "env"
+  environment         = "test"
   label_order         = ["name", "environment"]
   resource_group_name = module.resource_group.resource_group_name
   location            = module.resource_group.resource_group_location
