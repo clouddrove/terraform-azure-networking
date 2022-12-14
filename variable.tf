@@ -150,3 +150,19 @@ variable "disable_bgp_route_propagation" {
   default     = true
   description = "Boolean flag which controls propagation of routes learned by BGP on that route table."
 }
+
+variable "default_name_subnet" {
+  type = bool
+  default = false
+}
+
+variable "specific_name_subnet" {
+  type = bool
+  default = false
+}
+
+variable "specific_subnet_names" {
+  type        = string
+  default     = ""
+  description = "A list of public subnets inside the vNet."
+}
