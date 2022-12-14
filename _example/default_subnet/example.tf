@@ -24,7 +24,7 @@ module "vnet" {
   enable_ddos_pp      = false
 
   #subnet
-  default_name_subnet    = true
+  default_name_subnet           = true
   subnet_names                  = ["subnet1", "subnet2"]
   subnet_prefixes               = ["10.0.1.0/24", "10.0.2.0/24"]
   disable_bgp_route_propagation = false

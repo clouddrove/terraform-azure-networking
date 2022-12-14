@@ -24,8 +24,8 @@ module "vnet" {
   enable_ddos_pp      = false
 
   #subnet
-  specific_name_subnet    = true
-  specific_subnet_names                  = "GatewaySubnet"
+  specific_name_subnet          = true
+  specific_subnet_names         = "GatewaySubnet"
   subnet_prefixes               = ["10.0.1.0/24"]
   disable_bgp_route_propagation = false
 

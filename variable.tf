@@ -152,12 +152,12 @@ variable "disable_bgp_route_propagation" {
 }
 
 variable "default_name_subnet" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "specific_name_subnet" {
-  type = bool
+  type    = bool
   default = false
 }
 
