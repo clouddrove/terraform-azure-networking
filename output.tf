@@ -29,6 +29,6 @@ output "vnet_guid" {
 }
 
 output "vnet_rg_name" {
-  description = "The name of the resource group in which to create the virtual network"
+  description = "The name of the resource group in which to create the virtual network. Changing this forces a new resource to be created"
   value       = azurerm_virtual_network.vnet.*.resource_group_name
 }
