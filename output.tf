@@ -22,3 +22,13 @@ output "vnet_subnets" {
   description = "The ids of subnets created inside the newly created vNet"
   value       = azurerm_subnet.subnet.*.id
 }
+
+output "vnet_guid" {
+  description = "The GUID of the virtual network."
+  value       = azurerm_virtual_network.vnet.*.guid
+}
+
+output "vnet_rg_name" {
+  description = "The name of the resource group in which to create the virtual network"
+  value       = azurerm_virtual_network.vnet.*.resource_group_name
+}
