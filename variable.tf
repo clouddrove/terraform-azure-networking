@@ -63,7 +63,7 @@ variable "enable" {
 variable "resource_group_name" {
   type        = string
   default     = ""
-  description = "The name of an existing resource group to be imported."
+  description = "The name of the resource group in which to create the virtual network. Changing this forces a new resource to be created."
 }
 
 variable "location" {
